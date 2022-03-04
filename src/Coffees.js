@@ -2,30 +2,30 @@ import React, { useState, useEffect } from "react";
 
 function Coffees() {
   const [coffeeList, setCoffeeList] = useState();
-  const [temperature, setTemperature] =useState('hot');
+  const [temperature, setTemperature] = useState("hot");
   useEffect(() => {
     fetch(`https://api.sampleapis.com/coffee/${temperature}`)
-      .then((res) => res.json())
+      .then((response) => response.json())
       .then((data) => setCoffeeList(data))
-      .catch((err) => console.log(err));
+      .catch((error) => console.error(error));
   }, [temperature]);
   return (
-
-    <section>
-      <h2>Coffee Recipes</h2>
-      <button onClick={() => setTemperature('hot')}>Hot</button>
-      <button onClick={() => setTemperature('iced')}>Iecd</button>
-      <button onClick={() => setTemperature('latte')}>Latte</button>
-      {coffeeList ? (
+    <section className="coffee-container" id="coffees">
+      {/* We need our JSX to be inside a SINGLE CONATINING TAG. That tag can be a React.Fragment <></> if we don't want any HTML to render  */}
+      <h2>Coffee List</h2>
+      <div className="button-container">
+        <button onClick={() => setTemperature("hot")}>Hot</button>
+        <button onClick={() => setTemperature("iced")}>Iced</button>
+      </div>
+      {!coffeeList ? (
+        <h3> Loading Recipes...</h3>
+      ) : (
         <ol>
           {coffeeList.map((coffee) => {
-            return <li key={coffee.id}>{coffee.title}</li>;
+            return <li key={coffee.id}> {coffee.title}</li>;
           })}
         </ol>
-      ) : (
-        <p>Loading...</p>
       )}
-      <h3>Recipes fo here</h3>
     </section>
   );
 }
